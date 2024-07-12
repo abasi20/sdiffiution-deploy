@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  diffusion: # 服务名称
+    image: test:wj02 #
+    container_name: diffusion01 # 容器名称
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: "nvidia"
+              count: "all"
+              capabilities: [gpu]
+    environment:
+     - TZ=Asia/Shanghai # 设置容器时区 我这里通过下面挂载方式同步的宿主机时区和时间了,这里忽略
+    volumes:
+      - /home/AI_project/Docker_prj:/mnt # 映射数据目录，宿主机:容器
+    ports:
+      - 8080:1080 # 指定宿主机端口与容器端口映射关系，宿主机:容器
+      - 8089:1089 # 指定宿主机端口与容器端口映射关系，宿主机:容器
+    restart: always # 容器随docker启动自启

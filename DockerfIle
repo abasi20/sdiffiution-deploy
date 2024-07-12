@@ -1,0 +1,13 @@
+From cnstark/pytorch:2.0.1-py3.10.11-cuda11.8.0-ubuntu22.04
+
+RUN apt-get update && apt-get install -y ffmpeg libsm6 libxext6  libgl1 git git-lfs
+RUN pip3 install --upgrade pip setuptools && pip3 config set global.index-url https://mirrors.aliyun.com/pypi/simple
+
+COPY ./requirements.txt /requirements.txt
+RUN cd / && pip3 install --use-pep517 -r  requirements.txt && rm requirements.txt
+
+COPY ./start_GAI.sh /
+
+WORKDIR  /mnt
+RUN chmod 777 /start_GAI.sh
+ENTRYPOINT  ["/bin/bash", "-c", "/start_GAI.sh"]
